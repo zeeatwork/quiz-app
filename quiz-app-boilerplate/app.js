@@ -7,7 +7,7 @@ const store = {
   // 5 or more questions are required
   questions: [
     {
-      question: 'How do you create an alert box?',
+      name: 'How do you create an alert box?',
       answers: [
         'msgBox(“Correct!”)',
         'alertBox(“Correct!”)',
@@ -17,7 +17,7 @@ const store = {
       correctAnswer: 'alert(“Correct!”)'
     },
     {
-      question: 'How do you call a function in Javascript?',
+      name: 'How do you call a function in Javascript?',
       answers: [
         'call.myFunction()',
         'myFunction()',
@@ -27,17 +27,17 @@ const store = {
       correctAnswer: 'myFunction()'
     },
     {
-      question: 'Inside what element do we place JavaScript?',
+      name: 'Inside what element do we place JavaScript?',
       answers: [
-        '<scripting>',
-        '<js>',
-        '<javascript>',
-        '<script>'
+        '&lt;scripting&gt;',
+        '&lt;js&gt;',
+        '&lt;javascript&gt;',
+        '&lt;script&gt;'
       ],
-      correctAnswer: '<script>'
+      correctAnswer: '&lt;script&gt;'
     },
     {
-      question: 'How do you write an IF statement?',
+      name: 'How do you write an IF statement?',
       answers: [
         'if i = 7',
         'if (i == 7)',
@@ -47,7 +47,7 @@ const store = {
       correctAnswer: 'if (i == 7)'
     },
     {
-      question: 'How do you create a function?',
+      name: 'How do you create a function?',
       answers: [
         'function: myFunction()',
         'function = myFunction()',
@@ -59,21 +59,29 @@ const store = {
   ],
   quizStarted: false,
   questionNumber: 0,
-  score: 0
+  score: 0,
+  selectedAnswer: ""
 };
 function render() {
-  let question = store.questions[store.questionNumber];
-  let formFormat =
-    `<form>
-      <h3>How do you create an alert box?</h3>
-      <button type="button" class="blockbutton">Block Button</button>
-      <button type="button" class="blockbutton">Block Button</button>
-      <button type="button" class="blockbutton">Block Button</button>
-      <button type="button" class="blockbutton">Block Button</button>
-      <input type="submit" value="submit">
-    </form>`
 
-    return  formFormat;
+
+  let question = store.questions[store.questionNumber];
+  console.log(question);
+  let formFormat =
+    `<form class="question">
+      <h3>${question.name}</h3>
+      <button type="button" class="blockbutton">${question.answers[0]}</button>
+      <button type="button" class="blockbutton">${question.answers[1]}</button>
+      <button type="button" class="blockbutton">${question.answers[2]}</button>
+      <button type="button" class="blockbutton">${question.answers[3]}</button>
+      <input type="submit" value="submit">
+    </form>
+    <footer>
+        <p>Question BLANK OUT OF BLANK</p>
+        <p>Correct: NUMBERCORRECT Incorrect:NUMBERWRONG</p>
+      </footer>`;
+
+  $("main").html(formFormat);
 }
 
 function showStartPage() {
@@ -81,15 +89,30 @@ function showStartPage() {
     `<h2> Start my quiz here.</h2>
 <button type="button" class="start-btn">Start</button>
 `;
-$('main').html(startPage);
+  $('main').html(startPage);
 }
 
 $("main").on("click", ".start-btn", function () {
-  let page = render();
-  $("main").html(page);
-  //$(".question").show();
-  //$(".intropage").hide();
+  render();
+})
 
+$("main").on("click", ".blockbutton", function (event) {
+  console.log($(event.target).html());
+  store.selectedAnswer = $(event.target).html();
+})
+
+$("main").on("submit", ".question", function (event) {
+  event.preventDefault();
+  let question = store.questions[store.questionNumber];
+  console.log(store.selectedAnswer, question.correctAnswer);
+  if (store.selectedAnswer == question.correctAnswer) {
+    store.score = store.score + 1;
+    alert("YAY");
+  } else {
+    alert("Nope!");
+  }
+  store.questionNumber = store.questionNumber + 1;
+  render();
 })
 
 $(showStartPage)
@@ -111,7 +134,7 @@ $(showStartPage)
  * SEE BELOW FOR THE CATEGORIES OF THE TYPES OF FUNCTIONS YOU WILL BE CREATING 👇
  *
  */
- 
+
 /********** TEMPLATE GENERATION FUNCTIONS **********/
 
 // These functions return HTML templates
