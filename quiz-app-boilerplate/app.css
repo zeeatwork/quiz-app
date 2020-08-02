@@ -2,6 +2,12 @@
   box-sizing: border-box;
   font-family: Roboto, Candara, Verdana;
 }
+
+#answerSubmit{
+display: none;
+}
+
+
 header {
   display: flex;
   align-items: top;
