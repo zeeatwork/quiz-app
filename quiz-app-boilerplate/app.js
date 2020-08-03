@@ -14,7 +14,8 @@ const store = {
         'alert(“Correct!”)',
         'msg.write(“Correct!’)'
       ],
-      correctAnswer: 'alert(“Correct!”)'
+      correctAnswer: 'alert(“Correct!”)',
+      description: '1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     },
     {
       name: 'How do you call a function in Javascript?',
@@ -24,7 +25,8 @@ const store = {
         'call myFunction()',
         'callFunction=myFunction()'
       ],
-      correctAnswer: 'myFunction()'
+      correctAnswer: 'myFunction()',
+      description: '2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     },
     {
       name: 'Inside what element do we place JavaScript?',
@@ -34,7 +36,8 @@ const store = {
         '&lt;javascript&gt;',
         '&lt;script&gt;'
       ],
-      correctAnswer: '&lt;script&gt;'
+      correctAnswer: '&lt;script&gt;',
+      description: '3 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     },
     {
       name: 'How do you write an IF statement?',
@@ -44,7 +47,8 @@ const store = {
         'if i ==7 then',
         'if i = 7 then'
       ],
-      correctAnswer: 'if (i == 7)'
+      correctAnswer: 'if (i == 7)',
+      description: '4 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     },
     {
       name: 'How do you create a function?',
@@ -54,7 +58,8 @@ const store = {
         'function myFunction()',
         'myFunction <= function'
       ],
-      correctAnswer: 'function myFunction()'
+      correctAnswer: 'function myFunction()',
+      description: '5 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     }
   ],
   quizStarted: false,
@@ -78,7 +83,8 @@ let formFormat = "";
   formFormat =
     `<h1>Summary</h1>
     <p>Correct: ${numCorrect}</p> 
-    <p>Incorrect: ${numWrong}</p>`
+    <p>Incorrect: ${numWrong}</p>
+    <button type="button" class="restart-test">Restart the Test</button>`
   }else{
   
   
@@ -99,15 +105,50 @@ let formFormat = "";
       </footer>`;
       }
 
-  $("main").html(formFormat);
+  $("#main-container").html(formFormat);
+
+  $('.blockbutton').each(function(index, blockB) {
+    if ($(blockB).html() == question.correctAnswer) {
+      $(blockB).addClass('correct-ans');
+    }
+  });
+
+  $('.restart-test').click(function(){
+    console.log('test restart');
+    store.quizStarted = false;
+    store.questionNumber = 0;
+    store.score = 0;
+    store.selectedAnswer = "";
+    showStartPage();
+  });
 }
 
 function showStartPage() {
   let startPage =
-    `<h2> Start my quiz here.</h2>
-<button type="button" class="start-btn">Start</button>
+    `<header>
+      <h1>JavaScript Quiz</h1>
+    </header>
+    <section class="container">
+      <section id="main-container" class="text-center">
+        <h2> Start my quiz here.</h2>
+        <button type="button" class="start-btn">Start</button>
+      </section>
+      <section id="description-container" class="d-none text-center">
+        <p id="description-text"></p>
+        <button type="button" class="next-btn d-inline-block">Go To Next Question</button>
+        <button type="button" class="summary-btn d-inline-block">Go To Summary</button>
+      </section>
+    </section>
 `;
   $('main').html(startPage);
+
+  $('.next-btn, .summary-btn').click(function() {
+    console.log('test');
+    $('#description-container').hide();
+    //alert("YAY");
+    store.questionNumber = store.questionNumber + 1;
+    render();
+  });
 }
 
 $("main").on("click", ".start-btn", function () {
@@ -118,9 +159,9 @@ $("main").on("click", ".blockbutton", function (event) {
 
 // alert(this);
 
-$(".blockbutton").css("background-color","#AEA4BF");
-$(this).css("background-color","#ff00ff");
-$("#answerSubmit").css("display","block");
+$(".blockbutton").removeClass('ans-clicked');
+$(this).removeClass('ans-clicked').addClass('ans-clicked');
+$("#answerSubmit").css("display","inline-block");
 
 
 // alert("button works: " + $(event.target).html());
@@ -133,6 +174,7 @@ $("#answerSubmit").css("display","block");
 })
 
 $("main").on("submit", ".question", function (event) {
+  console.log('test submit');
 
   event.preventDefault();
   
@@ -142,14 +184,27 @@ $("main").on("submit", ".question", function (event) {
   
   if (store.selectedAnswer == question.correctAnswer) {
     store.score = store.score + 1;
-    alert("YAY");
+    //alert("YAY");
+    store.questionNumber = store.questionNumber + 1;
+    render();
   } else {
-    alert("Nope!");
+    //alert("Nope!");
+    $('#answerSubmit').hide();
+    $(".blockbutton").removeClass('ans-clicked btn-wrong').addClass('btn-wrong disabled');
+    $('.correct-ans').removeClass('btn-correct').addClass('btn-correct');
+    $('#description-text').text(question.description);
+    $('#description-container').hide().show();
+
+    if ((store.questions.length-1) == store.questionNumber) {
+      $('.next-btn').hide();
+      $('.summary-btn').hide().show();
+    } else {
+      $('.summary-btn').hide();
+      $('.next-btn').hide().show();
+    }
   }
-  
-  store.questionNumber = store.questionNumber + 1;
-  render();
 })
+
 
 $(showStartPage)
 

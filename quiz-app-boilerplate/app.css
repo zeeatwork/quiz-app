@@ -19,7 +19,7 @@ main {
   background-color: #362852;
   padding: 0;
   margin: 0;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   width: 100vw;
   height: 100vh;
@@ -42,6 +42,7 @@ body.wrong {
 }
 
 .container {
+  margin: auto;
   width: 500px;
   max-width: 80%;
   background-color: #EEFFDB;
@@ -69,18 +70,43 @@ body.wrong {
   color: gray;
 }
 
-.btn-correct {
-  background-color: #136f63;
-}
 
+.ans-clicked {
+  background-color: #ff00ff;
+}
 .btn-wrong {
   background-color: #D1495B;
+}
+
+.btn-correct {
+  background-color: #136f63;
 }
 
 .start-btn, .next-btn {
   font-size: 1.5rem;
   font-weight: bold;
   padding: 10px 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+button:focus {
+  border: 2px solid green;
+}
+
+
+.d-none {
+  display:none;
+}
+
+.d-inline-block {
+  display: inline-block;
 }
 
 
